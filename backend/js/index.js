@@ -1,5 +1,4 @@
-$(() => { // Run on page load
-
+$(() => (async () => {
   ///////////////////////////////////////////
   // Error handling
   // NOTE: Always keep this up at the top, otherwise it might miss errors
@@ -12,64 +11,29 @@ $(() => { // Run on page load
   }
 
   ///////////////////////////////////////////
-  // Smooth scrolling/auto expanding for navigation
-  ///////////////////////////////////////////
-
-  setTimeout(() => $('a[href^="#"]').on("click", evt => {
-  	evt.preventDefault();
-  	let elem = $($.attr(evt.target, "href"))
-  	if (elem.children("sect").length != 0) elem.click(); else {
-  	  $('html, body').animate({
-          scrollTop: elem.offset().top
-      }, 500, "easeInOutQuart");
-  	}
-  }), 10)
-
-  /*// Enables smooth scrolling on links
-// Adapted from https://stackoverflow.com/a/7717572
-$(document).on('click', 'a[href^="#"]', function(event) {
-    event.preventDefault();
-
-    let elem = $($.attr(this, "href"))
-
-    if (elem.children("sect").length != 0) elem.click(); else {
-    }
-});*/
-
-
-  ///////////////////////////////////////////
   // Include handling
-  // NOTE: Make sure this happens before sect handling, since these need to be resolved before then
+  // NOTE: Make sure this happens before sect handling, since these need to be resolved first
   ///////////////////////////////////////////
 
-  while ($("include").length) {
-	  $("include").each(function(index, item) {
-	    let elem = $(item)
+  while ($("include").length) await (async () => {
+    let elem = $("include").first()
 
-	    let sect = elem.attr("sect")
-	    if (!sect) {
-	      throw Error("No sect specified for include statement")
-	    }
+    let sect = elem.attr("sect")
+    if (!sect) throw Error("No sect specified for include statement")
 
-	    let data = $.ajax({type: "GET", url: `pages/${sect}.html`, async: false}).responseText
-	    if (!data.includes("Error response")) {
-	      elem.replaceWith($.parseHTML(data));
-	    } else console.error("Failed to include section \'" + sect + "\':\n", data)
-
-	  })
-  }
+    let page = await $.ajax(`pages/${sect}.html`)
+    if (!page.includes("Error response")) {
+      elem.replaceWith($.parseHTML(page));
+    } else throw Error(`Sect \'${sect}\' does not exist.`)
+  })()
 
   ///////////////////////////////////////////
-  // Main section handling
+  // Process all of the sections
   ///////////////////////////////////////////
 
   $("sect").each(function(index, item) {
-
     let elem = $(item);
-
     isSub = (elem.parent()[0].tagName.toLowerCase() == "sect")
-    isLong = elem.data("long")
-    expanding = isSub || isLong
 
     ///////////////////////////////////////////
     // Color Theming
@@ -79,9 +43,8 @@ $(document).on('click', 'a[href^="#"]', function(event) {
     let background;
     let foreground = "#fff";
 
-//    if (!isSub) {
-	{
-	  colorElem = (isSub ? elem.parent() : elem)
+    {
+      colorElem = (isSub ? elem.parent() : elem)
       attr = colorElem.attr("background")
       forceDark = (colorElem.attr("force-dark-text") != undefined)
       forceLight = (colorElem.attr("force-light-text") != undefined)
@@ -91,19 +54,7 @@ $(document).on('click', 'a[href^="#"]', function(event) {
     }
     if (isSub) background = "transparent" // TODO
 
-//    } else {
-//      attr = elem.parent().attr("background")
-//      forceDark = (elem.parent().attr("force-dark-text") != undefined)
-//      forceLight = (elem.parent().attr("force-light-text") != undefined)
-
-//      background = (attr != undefined) ? attr : getNextColor(true)
-//      foreground = (isLight(background) || forceDark) && !forceLight ? "#000" : "#fff"
-
-//      background = "transparent" //TODO: Fix eventually with color shift once css is cleaner
-//    }
-
     // Set background and text colors
-
     elem.css({
       backgroundColor: background,
       color: foreground
@@ -130,56 +81,51 @@ $(document).on('click', 'a[href^="#"]', function(event) {
         elem.prepend(icn)
       }
 
-	  // Generate a random ID for sections lacking it
-	  let id = elem.attr("id");
-	  if (!id) elem.attr("id", genID())
+      let img = elem.attr("img")
+      if (img) {
+        // TODO
+      }
+
+      // Generate a random ID for sections lacking it
+      let id = elem.attr("id");
+      if (!id) elem.attr("id", genID())
     }
-
-    ///////////////////////////////////////////
-    // Height handling
-    ///////////////////////////////////////////
-
-    if (isSub) elem.hide(); else setTimeout(() => {
-      //elem.css("height", elem.height())
-      //elem.children("sect").show().css("opacity", 0)
-    }, 1)
 
     ///////////////////////////////////////////
     // Expanding handling
     ///////////////////////////////////////////
 
-    if (expanding) {
+    if (isSub) elem.hide()
+
+    if (isSub) {
       sect = elem.parent()
       if (sect.data("expanding-handled")) return;
 
-	  let icn;
+      let icn;
       icn = $(document.createElement("icn"))
       icn.text("fullscreen")
       icn.addClass("material-icons")
       sect.prepend(icn)
 
-	  let sectClick = e => {
-	  	let item = findSect(e)
-	  	item.off("click")
-	  	setTimeout(() => item.children("icn").click(icnClick), 100)
-	  	fillScreen(item.attr("id"))
-	  }
+      let sectClick = e => {
+        let item = findSect(e)
+        item.off("click")
+        setTimeout(() => item.children("icn").click(icnClick), 100)
+        fillScreen(item.attr("id"))
+      }
 
-	  let icnClick = e => {
-	  	let item = findSect(e)
-	  	item.children("icn").off("click")
-	  	setTimeout(() => item.click(sectClick), 100)
-	  	unfillScreen(item.attr("id"))
-	  }
-	  sect.click(sectClick)
+      let icnClick = e => {
+        let item = findSect(e)
+        item.children("icn").off("click")
+        setTimeout(() => item.click(sectClick), 100)
+        unfillScreen(item.attr("id"))
+      }
+      sect.click(sectClick)
 
       sect.data("expanding-handled", true)
       elem.data("expand-background", background)
-      console.log("sub-back: #" + elem.attr("id"))
       return
     }
-
-
 
     ///////////////////////////////////////////
     // Animations
@@ -191,10 +137,10 @@ $(document).on('click', 'a[href^="#"]', function(event) {
       elem.ripple(obj)
     }
 
-	if (!isSub) elem.css({
-       opacity: 0,
-       top: "200px"
-	})
+    if (!isSub) elem.css({
+      opacity: 0,
+      top: "200px"
+    })
 
     ///////////////////////////////////////////
     // Navigation Setup
@@ -208,7 +154,7 @@ $(document).on('click', 'a[href^="#"]', function(event) {
       a.innerText = elem.find("h1")[0].innerText
       $(a).attr("href", `#${elem.attr("id")}`)
 
-	  // TODO: Fix the hover
+      // TODO: Fix the hover
       $(a).hover(function(event) {
         $(this).css({
           backgroundColor: background,
@@ -241,24 +187,36 @@ $(document).on('click', 'a[href^="#"]', function(event) {
   });
 
   ///////////////////////////////////////////
+  // Enable smooth scrolling on all generated links
+  ///////////////////////////////////////////
+
+  $('a[href^="#"]').on("click", evt => {
+  	evt.preventDefault();
+  	let elem = $($.attr(evt.target, "href"))
+  	if (elem.children("sect").length != 0) elem.click(); else {
+  	  $('html, body').animate({
+          scrollTop: elem.offset().top
+      }, 500, "easeInOutQuart");
+  	}
+  })
+
+  ///////////////////////////////////////////
   // Startup animations
   // NOTE: Always keep last, so all loading terminates before this fires
   ///////////////////////////////////////////
 
   hideSidebar(/*slowly =*/ true)
-  setTimeout(() => {
-    $("startup").slideUp(/*1*/000, "easeInOutQuart", () => {
-    	$("sect").not("sect sect").each((index, item) => {
-    	    let elem = $(item);
-    		if (elem.parent()[0].tagName.toLowerCase() == "sect") return;
+  $("startup").slideUp(/*1*/000, "easeInOutQuart", () => {
+    $("sect").not("sect sect").each((index, item) => {
+        let elem = $(item);
+      if (elem.parent()[0].tagName.toLowerCase() == "sect") return;
 
-    		elem.animate({
-    		   opacity: 1,
-    		   top: 0
-    		}, 700 + (200 * index), "easeInOutQuart")
-    	})
+      elem.animate({
+         opacity: 1,
+         top: 0
+      }, 700 + (200 * index), "easeInOutQuart")
     })
-    showSidebar()
-  }, /*5*/00)
+  })
+  showSidebar()
 
-})
+})())
