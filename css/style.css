@@ -1,0 +1,6 @@
+@import url("text.css");
+@import url("sidebar.css");
+@import url("highlight.css");
+@import url("buttons.css");
+@import url("sect.css");
+* { z-index: 1; max-width: 100vw; font-family: Lato, sans-serif; cursor: default; user-select: none; transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1); transition-duration: 500ms; }

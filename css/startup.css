@@ -1,0 +1,4 @@
+body, html { margin: 0px; padding: 0px; background-color: rgb(18, 18, 18); color: rgb(18, 18, 18); }
+::-webkit-scrollbar { display: none; }
+a { color: rgb(18, 18, 18); }
+include { display: none; }

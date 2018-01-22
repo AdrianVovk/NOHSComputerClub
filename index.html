@@ -1,0 +1,61 @@
+
+<!--
+	This is the root file of this system. Please, do not touch this unless you know what you are doing
+	This file should stay in the root of the website, otherwise it wouldn't work.
+	
+	If you are a visitor reading this, welcome! Please feel free to explore how this simple HTML file is expanded into 
+	what you see in a browser. If you are exploring, please view the page source for an acurate view, for when viewing
+	from inspect element, you will find a page that has been extensively modified by JavaScript. 
+	
+	To make changes to the contents of the website, edit the pages located in the pages/ directory
+	
+-->
+
+<html>
+  <head>
+    <title>NOHS Computer Club</title>
+
+    <!-- A css style containing the bare minimum to conceal loading underneath -->
+    <link href="backend/css/startup.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, height=device-height">
+ </head>
+
+  <body>
+    <startup style="display: none;">NOHS Computer Club</startup>
+    <sidebar>
+	   <i class="material-icons ico">computer code favorite</i>
+       <ul id="nav"><!-- Populated with JavaScript --></ul>
+    </sidebar>
+
+	<!-- This will expand to the contents of the website -->
+	<include sect="home"></include>
+
+    <!--
+      DEPENDENCY LOADING
+      NOTE: Keep this down here at the very bottom to make sure the site loads quickly
+    -->
+
+  	<!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://matthias-vogt.github.io/legitRipple.js/dist/ripple.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+    <script src="backend/js/utils.js"></script>
+    <script src="backend/js/expanding.js"></script>
+    <script src="backend/js/index.js"></script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Space+Mono:400,700" rel="stylesheet">
+
+    <!-- Styles -->
+    <link href="https://matthias-vogt.github.io/legitRipple.js/dist/ripple.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" rel="stylesheet">
+    <link href="backend/css/style.css" rel="stylesheet" />
+
+    <!-- Extras -->
+    <link href="./favicon.ico" rel="shortcut icon"/>
+
+  </body>
+</html>
