@@ -19,19 +19,12 @@ function fillScreen(id) {
   item.addClass("fill")
   $('html, body').animate({ scrollTop: item.offset().top }, 500, "easeInOutQuart") // Move the element up
 
-  // Lock the screen
-  //setTimeout(() => item.addClass("expanded"), 500) // Lock the screen onto the element
-  $("body").css("overflow", "hidden") // Disable scrolling the background
-
   // Adjust children
   item.children("h1").addClass("root") // Make h1 larger
   item.children("icn").addClass("close") // Make the expand button into a close button
   item.children("p").slideUp(500, "easeInOutQuart") // Hide the collapsed state description
 
-  $(document).on("keyup", e => {
-  	e = e || window.event;
-  	if (e.keyCode == 27) icn.click()
-  })
+  pushEsc(id)
 
   item.data("filling-screen", true) //TODO: Remove
 }
@@ -49,10 +42,8 @@ function unfillScreen(id) {
   item.children("icn").removeClass("close") // Move the close button into an expand button
   item.children("p").slideDown(500, "easeInOutQuart") // Show collapsed state description
 
-  // Unlock the screen
-  item.removeClass("expanded")
-  $("html, body").scrollTop(item.offset().top) // Compensate for jumping from ^
-  setTimeout(() => $("body").css("overflow", ""), 500)
+  //$("html, body").scrollTop(item.offset().top)
+  //setTimeout(() => $("body").css("overflow", ""), 500)
 
   // Restore item size
   item.removeClass("fill")
@@ -71,7 +62,8 @@ function unfillScreen(id) {
   		})
   	}
   }, 510)
-  $(document).off("keyup")
+
+  popEsc()
 
   item.data("filling-screen", false) //TODO: Remove
 }
@@ -81,4 +73,27 @@ function fadeText(elem, text) {
     elem.text(text)
     elem.animate({opacity: 1}, 100, "easeInOutQuart")
   })
+}
+
+///////////////////////////////////////////
+// Escape key handling
+///////////////////////////////////////////
+
+let escapeStack = [];
+let stackPopped = false;
+function handleEscape(e) {
+  e = e || window.event;
+  if (e.keyCode == 27 && escapeStack.length) {
+    stackPopped = true;
+    $("#" + escapeStack.pop()).children("icn").click()
+  }
+}
+function pushEsc(id) {
+  escapeStack.push(id)
+}
+function popEsc() {
+  if (!stackPopped) {
+    escapeStack.pop()
+  }
+  stackPopped = false;
 }

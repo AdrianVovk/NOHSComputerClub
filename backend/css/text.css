@@ -1,7 +1,36 @@
-sect a { color: rgb(18, 18, 18); font-weight: 900; text-decoration: none; }
-sect a:hover { background: black; color: white; padding: 5px; }
-p { margin-left: 20vw; margin-right: calc(17vw + 24px); transition-property: margin-left; }
-sect.fill p { margin-left: 5vw !important; }
-h1 { font-size: 1.5em; margin: 2vh 2vh 2vh 20vw; font-weight: 900; transition-property: margin-left, font-size; }
-sect.fill h1 { margin-left: 5vw !important; }
-sect.fill h1.root { font-size: 2.5em !important; }
+sect a {
+  color: rgb(18, 18, 18);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+sect a:hover {
+  background: black;
+  color: white;
+  padding: 5px;
+}
+
+p {
+  margin-left: 20vw;
+  margin-right: calc(17vw + 24px);
+  transition-property: margin-left;
+}
+
+sect.fill p {
+  margin-left: 5vw !important;
+}
+
+h1 {
+  font-size: 1.5em;
+  margin: 2vh 2vh 2vh 20vw;
+  font-weight: 900;
+  transition-property: margin-left, font-size;
+}
+
+sect.fill h1 {
+  margin-left: 5vw !important;
+}
+
+sect.fill h1.root {
+  font-size: 2.5em !important;
+}

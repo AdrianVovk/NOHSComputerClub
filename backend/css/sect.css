@@ -1,8 +1,39 @@
-sect { display: block; margin: 0px; padding: 16px; width: 100vw; transition-property: width, height, background-color; }
-sect.fill { width: 100vw !important; height: 100vh !important; left: 0px !important; top: 0px !important; }
-sect.expanded { position: fixed; z-index: 2; }
-sect sect { padding-left: 0px !important; }
-sect.expanded sect.expanded { background-color: red !important; }
-sect icn { margin: 2vh 15vw 2vh 2vh; text-decoration: none; float: right; transition-property: font-size, margin-right; font-size: 1.5em !important; }
-sect.fill icn.close { position: sticky; font-size: 2.5em !important; margin-right: calc(2vw + 16px) !important; }
-sect button, sect a .btn { text-decoration: none; padding: 15px; margin: 20px; }
+sect {
+  display: block;
+  margin: 0px;
+  padding: 16px;
+  width: 100vw;
+  transition-property: width, height, background-color;
+}
+
+sect.fill {
+  width: 100vw !important;
+  height: 100vh !important;
+  left: 0px !important;
+  top: 0px !important;
+  overflow-y: scroll;
+}
+
+sect sect {
+  padding-left: 0px !important;
+}
+
+sect icn {
+  margin: 2vh 15vw 2vh 2vh;
+  text-decoration: none;
+  float: right;
+  transition-property: font-size, margin-right;
+  font-size: 1.5em !important;
+}
+
+sect.fill icn.close {
+  position: sticky;
+  font-size: 2.5em !important;
+  margin-right: calc(2vw + 16px) !important;
+}
+
+sect button, sect a .btn {
+  text-decoration: none;
+  padding: 15px;
+  margin: 20px;
+}

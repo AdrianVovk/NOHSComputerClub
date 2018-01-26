@@ -1,16 +1,63 @@
-sidebar { display: flex; flex-direction: column; justify-content: center; text-align: center; position: fixed; padding: 0px; margin: 0px; top: 0px; bottom: 0px; left: 0px; width: 15vw; min-width: 180px; height: 100%; background-color: rgba(0, 0, 0, 0.733); z-index: 2; overflow: scroll; transition-property: left, background-color; }
+sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 
-@media only screen and (max-width: 1000px) {
-  sidebar, sidebar.hidden { background-color: rgb(0, 0, 0); left: -180px !important; }
-  p, h1 { margin-left: 10vw !important; }
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  padding: 0;
+  margin: 0;
+
+  width: 15vw;
+  min-width: 180px;
+  height: 100vh;
+
+  background-color: rgba(0, 0, 0, 0.733);
+
+  z-index: 2;
+
+  transition-property: left, background-color;
 }
+
+sidebar .ico {
+  font-size: 48px;
+  color: white;
+  padding: 15px;
+
+  /* Fixes issue where only these icons can be selected in Firefox */
+  -moz-user-select: none;
+}
+
+/*============ HIDING ============*/
 
 sidebar.hidden { left: -15vw; }
 sidebar.cssLacksAMaxFunction { left: -180px !important; }
-sidebar .ico { font-size: 48px; color: rgb(255, 255, 255); }
-sidebar #nav { background-color: rgba(0, 0, 0, 0); margin: 0px; padding: 0px; }
-sidebar #nav li { float: left; width: 100%; height: 48px; }
-sidebar #nav li a { width: 100%; padding: 15px; float: right; text-align: right; color: rgb(255, 255, 255); font-size: 16px; font-weight: bolder; text-decoration: none; transition: all 300ms ease-in-out; font-family: Lato, sans-serif; }
-sidebar #nav li .sub { width: 100%; padding: 15px; float: right; text-align: right; color: rgb(179, 179, 179); background-color: rgb(33, 33, 33); font-size: 16px; font-weight: bolder; text-decoration: none; transition: all 300ms ease-in-out; }
-sidebar #nav .sub-container { overflow: hidden; height: 0px; }
-sidebar #nav li a:hover, sidebar #nav li .sub:hover { color: rgb(0, 0, 0); background-color: white; }
+
+/*============ NAVIGATION ============*/
+
+sidebar #nav {
+  background-color: transparent;
+  margin: 0px;
+  padding: 0px;
+}
+
+sidebar #nav li {
+  width: 100%;
+  height: 48px;
+}
+
+sidebar #nav li a {
+  width: calc(100% - 30px);
+  padding: 15px;
+  float: right;
+
+  color: white;
+  font-size: 16px;
+  text-align: right;
+  font-weight: bolder;
+  text-decoration: none;
+}

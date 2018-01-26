@@ -1,13 +1,13 @@
 $(() => (async () => {
+
   ///////////////////////////////////////////
   // Error handling
   // NOTE: Always keep this up at the top, otherwise it might miss errors
   ///////////////////////////////////////////
 
-  window.onerror = () => {
-    let startup = $("startup")
-    startup.text("An error has occured. Try reloading  the page")
-    startup.slideDown(1000, "easeInOutQuart")
+  window.onerror = (message) => {
+    alert("Something has gone wrong on this page. Reloading...\n\n" + message)
+    location.reload()
   }
 
   ///////////////////////////////////////////
@@ -17,13 +17,12 @@ $(() => (async () => {
 
   while ($("include").length) await (async () => {
     let elem = $("include").first()
-
     let sect = elem.attr("sect")
     if (!sect) throw Error("No sect specified for include statement")
 
     let page = await $.ajax(`pages/${sect}.html`)
     if (!page.includes("Error response")) {
-      elem.replaceWith($.parseHTML(page));
+      elem.replaceWith($.parseHTML(page, document, true));
     } else throw Error(`Sect \'${sect}\' does not exist.`)
   })()
 
@@ -64,6 +63,21 @@ $(() => (async () => {
     // TODO: Buttons, links, etc
 
     ///////////////////////////////////////////
+    // Animations
+    ///////////////////////////////////////////
+
+    { // Ripples
+      let obj = { adaptPos: false }
+      if (!isLight(foreground)) obj.callback = darkRipple
+      elem.ripple(obj)
+    }
+
+    if (!isSub) elem.css({
+      opacity: 0,
+      top: "200px"
+    })
+
+    ///////////////////////////////////////////
     // Attributes
     ///////////////////////////////////////////
 
@@ -84,6 +98,11 @@ $(() => (async () => {
       let img = elem.attr("img")
       if (img) {
         // TODO
+      }
+
+      let dumb = elem.attr("dumb")
+      if (dumb != undefined) {
+        return; // Skip to the next sect
       }
 
       // Generate a random ID for sections lacking it
@@ -126,21 +145,6 @@ $(() => (async () => {
       elem.data("expand-background", background)
       return
     }
-
-    ///////////////////////////////////////////
-    // Animations
-    ///////////////////////////////////////////
-
-    { // Ripples
-      let obj = { adaptPos: false }
-      if (!isLight(foreground)) obj.callback = darkRipple
-      elem.ripple(obj)
-    }
-
-    if (!isSub) elem.css({
-      opacity: 0,
-      top: "200px"
-    })
 
     ///////////////////////////////////////////
     // Navigation Setup
@@ -206,17 +210,22 @@ $(() => (async () => {
   ///////////////////////////////////////////
 
   hideSidebar(/*slowly =*/ true)
-  $("startup").slideUp(/*1*/000, "easeInOutQuart", () => {
-    $("sect").not("sect sect").each((index, item) => {
-        let elem = $(item);
-      if (elem.parent()[0].tagName.toLowerCase() == "sect") return;
+  $("sect").not("sect sect").each((index, item) => {
+      let elem = $(item);
+    if (elem.parent()[0].tagName.toLowerCase() == "sect") return;
 
-      elem.animate({
-         opacity: 1,
-         top: 0
-      }, 700 + (200 * index), "easeInOutQuart")
-    })
+    elem.animate({
+       opacity: 1,
+       top: 0
+    }, 700 + (200 * index), "easeInOutQuart")
   })
   showSidebar()
+
+  ///////////////////////////////////////////
+  // Extras
+  ///////////////////////////////////////////
+
+  $(document).on("keyup", handleEscape)
+  $("sidebar").children(".ico").ripple()
 
 })())

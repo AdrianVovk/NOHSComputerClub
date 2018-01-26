@@ -98,3 +98,7 @@ function findSect(event) {
 	if (item.attr("id") == undefined) item = item.parent()
 	return item
 }
+
+function testErrorDialog() {
+  setTimeout(() => {throw Error("This is a test")}, 200)
+}

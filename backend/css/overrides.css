@@ -1,0 +1,9 @@
+@media only screen and (max-width: 1000px) {
+  sidebar, sidebar.hidden {
+    background-color: black;
+    left: -180px !important;
+  }
+  p, h1 {
+    margin-left: 10vw !important;
+  }
+}
