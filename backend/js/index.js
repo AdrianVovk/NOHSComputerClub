@@ -72,7 +72,7 @@ $(() => (async () => {
     // Animations
     ///////////////////////////////////////////
 
-    { // Ripples
+    if (!isSub) { // Ripples
       let obj = { adaptPos: false }
       if (!isLight(foreground)) obj.callback = darkRipple
       elem.ripple(obj)

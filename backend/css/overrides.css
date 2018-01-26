@@ -3,7 +3,7 @@
     background-color: black;
     left: -180px !important;
   }
-  p, h1 {
-    margin-left: 10vw !important;
+  p, h1, li {
+    margin-left: 5vw !important;
   }
 }
