@@ -10,13 +10,19 @@ sect a:hover {
   padding: 5px;
 }
 
-p {
+sect ul {
+  padding: 0;
+  margin: 0;
+  list-style: inside;
+}
+
+sect p, sect li {
   margin-left: 20vw;
   margin-right: calc(17vw + 24px);
   transition-property: margin-left;
 }
 
-sect.fill p {
+sect.fill p, sect.fill li {
   margin-left: 5vw !important;
 }
 
