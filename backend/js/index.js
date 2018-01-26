@@ -11,6 +11,12 @@ $(() => (async () => {
   }
 
   ///////////////////////////////////////////
+  // Compensate for TinyURL adding on #featured (it just bothers me)
+  ///////////////////////////////////////////
+
+  window.location = "#"
+
+  ///////////////////////////////////////////
   // Include handling
   // NOTE: Make sure this happens before sect handling, since these need to be resolved first
   ///////////////////////////////////////////
