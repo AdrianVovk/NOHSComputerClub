@@ -18,6 +18,10 @@ sect sect {
   padding-left: 0px !important;
 }
 
+/*html:has(sect.fill) { ONCE SUPPORT COMES IN
+  overflow: hidden !important;
+}*/
+
 sect icn {
   margin: 2vh 15vw 2vh 2vh;
   text-decoration: none;
@@ -29,7 +33,7 @@ sect icn {
 sect.fill icn.close {
   position: sticky;
   font-size: 2.5em !important;
-  margin-right: calc(2vw + 16px) !important;
+  margin-right: calc(2vw + 30px) !important;
 }
 
 sect button, sect a .btn {

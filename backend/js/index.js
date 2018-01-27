@@ -106,8 +106,8 @@ $(() => (async () => {
         // TODO
       }
 
-      let dumb = elem.attr("dumb")
-      if (dumb != undefined) {
+      let noNav = elem.attr("no-nav")
+      if (noNav != undefined) {
         return; // Skip to the next sect
       }
 

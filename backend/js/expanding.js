@@ -1,13 +1,12 @@
 function fillScreen(id) {
   item = $(id.startsWith("#") ? id : "#" + id)
-  parentExpanded = item.parent().data("filling-screen")
+  parentExpanded = item.parent().hasClass("fill")
 
   // Icon management
   icn = item.children("icn")
   fadeText(icn, "close")
   item.css("height", item.height())
   item.children("sect").fadeIn(600, "easeInOutQuart")
-
 
   item.data("initial-offset", $(window).scrollTop()) // Store the initial scroll state
   if (!parentExpanded) hideSidebar() // Hide navigation
@@ -17,6 +16,7 @@ function fillScreen(id) {
   //	adjustColor(item.parent().data("expand-background"), -50)
   }
   item.addClass("fill")
+  $('html').css("overflow", "hidden")
   $('html, body').animate({ scrollTop: item.offset().top }, 500, "easeInOutQuart") // Move the element up
 
   // Adjust children
@@ -25,12 +25,10 @@ function fillScreen(id) {
   item.children("p").slideUp(500, "easeInOutQuart") // Hide the collapsed state description
 
   pushEsc(id)
-
-  item.data("filling-screen", true) //TODO: Remove
 }
 function unfillScreen(id) {
   item = $(id.startsWith("#") ? id : "#" + id)
-  parentExpanded = item.parent().data("filling-screen")
+  parentExpanded = item.parent().hasClass("fill")
 
   // Icon management
   icn = item.children("icn")
@@ -42,10 +40,11 @@ function unfillScreen(id) {
   item.children("icn").removeClass("close") // Move the close button into an expand button
   item.children("p").slideDown(500, "easeInOutQuart") // Show collapsed state description
 
-  //$("html, body").scrollTop(item.offset().top)
+  //$("html, body").scrollTop(item.offset().top)\
   //setTimeout(() => $("body").css("overflow", ""), 500)
 
   // Restore item size
+  if (!parentExpanded) $('html').css("overflow", "")
   item.removeClass("fill")
   item.animate({scrollTop: 0}, 500, "easeInOutQuart")
   $('html, body').animate({ scrollTop: item.data("initial-offset") }, 500, "easeInOutQuart")
@@ -64,8 +63,6 @@ function unfillScreen(id) {
   }, 510)
 
   popEsc()
-
-  item.data("filling-screen", false) //TODO: Remove
 }
 
 function fadeText(elem, text) {
