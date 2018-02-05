@@ -32,7 +32,7 @@ function unfillScreen(id) {
 
   // Icon management
   icn = item.children("icn")
-  fadeText(icn, "fullscreen")
+  fadeText(icn, item.attr("icon") ? item.attr("icon") : "fullscreen")
   item.children("sect").fadeOut(500, "easeInOutQuart")
 
   // Return children to default state
@@ -67,7 +67,7 @@ function unfillScreen(id) {
 
 function fadeText(elem, text) {
   elem.animate({opacity: 0}, 100, "easeInOutQuart", () => {
-    elem.text(text)
+    elem.alterClass("mdi-*", "mdi-" + text)
     elem.animate({opacity: 1}, 100, "easeInOutQuart")
   })
 }

@@ -1,29 +1,54 @@
-/*
-// Color generation
-color_palette = [
-  "#FFB74D",
-  "#FFA726",
-  "#FF9800",
-  "#FB8C00",
-  "#F57C00",
-  "#EF6C00",
-  "#E65100"
-]//.reverse()
-color_index = -1
-color_direction = 1
-function getNextColor(isSub) {
-  if (!isSub) {
-    if (color_index == (color_palette.length - 1)) color_direction = -1
-    if (color_index == 0) color_direction = 1
-    color_index += color_direction
-  }
-  return color_palette[color_index]
-}
-*/
+///////////////////////////////////////////////////////////////////////////////
 
+let startColor = one.color("#fff")
+let endColor = one.color("#000")
+function colorGen(forceReplace = false) {
+	let numSects = $("sect").not("sect sect").length - 2;
+	colorForSect = (pos) => { // Emulating design from: https://git.io/vNA8b
+    calc = (prop) => {
+        let start = startColor[prop]();
+        let end = endColor[prop]();
+        let weight = pos / numSects;
+        return start * (1 - weight) + end * weight
+    };
+		return new one.color.RGB(calc("red"), calc("green"), calc("blue")).hex()
+	}
+	$("sect").not("sect sect").each((index, item) => {
+		if (index == 0 || index == (numSects + 1)) return;
+
+		if (!$(item).attr("background") || forceReplace) $(item).attr("background", colorForSect(index - 1).toUpperCase())
+	})
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+async function debug() { // Enables debug functions
+	let debugScript = document.createElement("script")
+	$(debugScript).attr("src", "backend/js/debug.js")
+	$("deps").append(debugScript)
+	$("#onpage-title")[0].innerText += " [DEBUG]"
+	window.debug = null;
+}
+
+function getNearestAttr(elem, attr) { // Loops through the hierarchy until it finds an element with attr set
+	elem = $(elem)
+	result = elem.attr(attr)
+	while (!result && (elem.prop("tagName") != undefined)) {
+		elem = elem.parent()
+		result = elem.attr(attr)
+	}
+	return result
+}
+function getNearestBackground(elem) {
+	return getNearestAttr(elem, "background")
+}
+
+function setFavicon(url) {
+	$("link[rel*='icon']").prop("href", url)
+}
 
 //https://css-tricks.com/snippets/javascript/lighten-darken-color/
-function adjustColor(col, amt) {
+function adjustColor1(col, amt) {
 
     var usePound = false;
 
@@ -97,8 +122,4 @@ function findSect(event) {
     while (item.parent()[0].tagName.toLowerCase() == "sect" && $(item.parent()[0]).attr("id") == undefined) item = item.parent()
 	if (item.attr("id") == undefined) item = item.parent()
 	return item
-}
-
-function testErrorDialog() {
-  setTimeout(() => {throw Error("This is a test")}, 200)
 }

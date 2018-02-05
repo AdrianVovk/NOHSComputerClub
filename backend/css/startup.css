@@ -1,21 +1,2 @@
-body, html {
-  margin: 0px;
-  padding: 0px;
-  background-color: rgb(18, 18, 18);
-  color: rgb(18, 18, 18);
-}
-
-body { overflow: visible; }
-html { overflow-y: scroll; }
-
-::-webkit-scrollbar {
-  display: none;
-}
-
-a {
-  color: rgb(18, 18, 18);
-}
-
-include {
-  display: none;
-}
+body,html {margin:0;padding:0;background:#121212;color:#121212;overflow-y: scroll;}
+a {color:#121212}

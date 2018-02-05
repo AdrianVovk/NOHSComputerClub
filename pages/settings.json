@@ -1,0 +1,10 @@
+{
+  "title": "NOHS Computer Club",
+  "favicon": "favicon.ico",
+  "sidebar_icons": "laptop code-tags heart",
+  "default_sect": "home",
+  "debug": false,
+  "beta": true,
+  "top_color": "#2196F3",
+  "bottom_color": "#0D47A1"
+}
